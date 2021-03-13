@@ -8,3 +8,4 @@ from app.models import *
 admin.site.register(Aadhar)
 admin.site.register(Locations)
 admin.site.register(Driver)
+admin.site.register(WareHouse)

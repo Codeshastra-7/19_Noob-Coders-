@@ -16,11 +16,12 @@ def index(request):
 def dashboard(request, id):
     user = Aadhar.objects.get(id=id)
     driver = Driver.objects.filter(contact = user)
+    details = WareHouse.objects.filter(farmer = user)[0]
     context = {
-        'apikey': 'AIzaSyCYUeS2YnGYNzt9kZRc1p-4tt4IyEacsjY',
-        'user': user,
-        'driver': driver
-
+        #'apikey': 'AIzaSyCYUeS2YnGYNzt9kZRc1p-4tt4IyEacsjY',
+        'auser': user,
+        'driver': driver,
+        'details': details,
     }
     return render(request,'app/dashboard.html',context)
 
@@ -38,7 +39,7 @@ def location(request,id,*args,**kwargs):
         origin = (d.latitude, d.longitude)
         distance = round(geodesic(origin, dest).kilometers, 2)
         li.update({"truckno": d.truckno, "distance": distance,
-                'driver_name ': d.name,
+                'driver_name': d.name,
                 'delivery_location': d.deliver.name,
                 'phonenumber': d.phonenumber,
         })

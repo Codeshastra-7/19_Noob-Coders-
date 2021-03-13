@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', index, name="main"),
     path('<int:id>/dashboard/' ,dashboard, name="dashboard"),
-    path('', include('pwa.urls')),
+    path('<int:id>/distance/', location, name="distance"),
 
 ]
 
