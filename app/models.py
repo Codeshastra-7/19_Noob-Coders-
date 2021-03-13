@@ -31,7 +31,6 @@ class WareHouse(models.Model):
     currentcottonprice = models.FloatField()
     monthlyrevenue = models.FloatField()
 
-
 class Driver(models.Model):
     contact = models.ForeignKey(Aadhar, related_name="user", on_delete=models.CASCADE)
     name= models.CharField(max_length=150, blank=True, null=True)
@@ -41,9 +40,23 @@ class Driver(models.Model):
     truckno =  models.CharField(max_length=150, blank=True, null=True)
     phonenumber = models.CharField(max_length=20, blank=True, null=True)
     image = models.ImageField(upload_to="drivers")
-    deliver = models.ForeignKey(Locations, related_name='loc', on_delete=models.CASCADE)
+    deliver = models.ForeignKey(Locations, related_name='loc', on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.name)
+
+
+class TransportItems(models.Model):
+    farmer = models.ForeignKey(Aadhar, related_name='aadhar',on_delete=models.CASCADE,null=True, blank=True)
+    quantity = models.FloatField(null=True)
+    drive = models.ForeignKey(Driver, related_name='driver_name', on_delete=models.DO_NOTHING,null=True,blank=True)
+    time_created = models.DateField(auto_now_add=True)
+    dispatchtime = models.DateTimeField(auto_now=False, auto_now_add=False)
+    description = models.CharField(max_length=300,null=True, blank=True)
+    location = models.CharField(max_length=100,null=True,blank=True)
+
+    def __str__(self):
+        return str(self.farmer.name)
+
 
  

@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+    <div class="w3-container" style="margin:64px 20px;">
+    <h1 class="w3-xlarge">Qr Generator</h1>
+        <form class="w3-form" method="POST">
+        {% csrf_token %}
+        <p><input class="w3-input w3-padding-16" type="number" placeholder="Quantity(in quintals)" required name="quantity"></p>
+        <p><input class="w3-input w3-padding-16" type="text" placeholder="Destination" required name="location"></p>
+        <p><input class="w3-input w3-padding-16" type="text" placeholder="Description" required name="description"></p>
+        <p><input class="w3-input w3-padding-16" type="datetime-local" placeholder="dispatch date and time" required name="dispatchtime" value="2020-11-16T20:00"></p>
+        <br>
+        <button class="w3-button w3-blue w3-round" type="submit">SUBMIT</button>
+        </form>
+    </div>
+    <div class='w3-container'>
+        <h1 class="w3-xlarge">All </h1>
+        {% for d in data %}
+        <div class="w3-card-4 w3-padding w3-margin">
+        <p>Driver assigned: {{ d.drive.name }}</p>
+        <p>Dispatch Details: {{ d.dispatchtime }}</p>
+        <a href="{% url 'qrdata' id=auser.id qid=d.id %}">Get Details</a>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

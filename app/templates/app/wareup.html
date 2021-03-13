@@ -1,0 +1,15 @@
+
+{% extends 'app/base.html' %}
+{% block content %}
+{% load tailwind_filters %}
+
+    <div class="w3-container w3-padding-32" style="margin-top:64px;">
+        <form class="w3-form" method="POST">
+        {% csrf_token %}
+            {{ form|crispy }}
+            <br>
+            <button class="w3-button w3-blue">SUBMIT</button>
+        </form>
+    </div>
+
+{% endblock %}

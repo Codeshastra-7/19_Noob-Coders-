@@ -85,9 +85,9 @@
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
     <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Overview</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-map-marker fa-fw"></i>  All Donation Drives</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-map-marker fa-fw"></i>  All Drivers</a>
     
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Overview</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  qr code</a>
   </div>
 </nav>
 
@@ -122,6 +122,7 @@
         </div>
     </div>
   </div>
+  <a href="{% url 'warehousedetupdate' id=auser.id %}" class="w3-text-blue w3-margin">Update Ware House details</a>
 </div>
 
 
@@ -160,7 +161,7 @@
     <div class="w3-rows">
       
         <div class="w3-col l3 m3 s6">
-            <a href="#">
+            <a href="{% url 'qrgen' id=auser.id %}">
             <div class="w3-container w3-border w3-round w3-center">
            <p><i class="fa fa-qrcode w3-xlarge"></i></p>
             <p>Generate QR</p>
@@ -178,7 +179,7 @@
             </a>
         </div>
         <div class="w3-col l3 m3 s6">
-            <a href="#">
+            <a href="{% url 'help' %}">
           
             <div class="w3-container w3-border w3-round w3-center">
             <p><i class="fa fa-question-circle w3-xlarge"></i></p>
@@ -187,13 +188,14 @@
             </a>
         </div>
         <div class="w3-col l3 m3 s6">
-              <a href="#">
+        <a href="{% url 'warehousedetupdate' id=auser.id %}">
+
           
             <div class="w3-container w3-border w3-round w3-center">
             <p><i class="fa fa-info-circle w3-xlarge"></i></p>
             <p>warehouse data</p>
             </div>
-              <a href="#">
+              </a>
           
         </div>
     </div>
@@ -201,6 +203,7 @@
   <br>
   <br>
 <div class="w3-container w3-hide-medium w3-hide-large" style="margin-top:60px;">
+<a href="{% url 'warehousedetupdate' id=auser.id %}" class="w3-text-blue w3-center">Update Ware House details</a>
 <div class="w3-row-padding">
     <div class="w3-quarter" style="line-height:100%;padding:10px 0px;margin:auto;">
       <div class="w3-container w3-round-large w3-red w3-padding-16">

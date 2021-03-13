@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-
+    'qr_code',
+    'crispy_forms',
+    "crispy_tailwind",
     'app',
 ]
 
@@ -74,6 +76,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'farmer.wsgi.application'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

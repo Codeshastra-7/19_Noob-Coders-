@@ -1,0 +1,69 @@
+{% extends 'app/base.html'%}
+
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-qrcode-reader/dist/VueQrcodeReader.umd.min.js"></script>
+
+
+<div id='app' class="w3-padding">
+    <p class="w3-center w3-large w3-wide btn btn-2">Scan qrcode</p>
+    <hr class="w3-margin-left w3-margin-bottom w3-center w3-margin-right w3-round-xlarge" style="height: 4px;padding:0px 0px;margin:0px 0px;background-image: linear-gradient(90deg, #F8049C,#FDD54F);border: 0;">
+
+    <p class="error">[[ error ]]</p>
+
+    <p class="w3-center decode-result">Last result:<br> <b class="w3-center">[[ result ]]</b> <a v-bind:href="ahref" v-if="result" class="w3-button w3-round w3-blue w3-center w3-button">Visit Store</a></p>
+    
+    <qrcode-stream @decode="onDecode" @init="onInit"></qrcode-stream>
+<br>
+<div class="w3-container w3-center">
+<qrcode-drop-zone></qrcode-drop-zone>
+</div>
+  </div>
+
+<script>
+
+new Vue({
+    delimiters:["[[","]]"],
+  el:"#app",
+  data () {
+    return {
+      result: '',
+      ahref:'',
+      error: ''
+    }
+  },
+
+  methods: {
+    onDecode (result) {
+      var b = result.split('/');
+
+      this.result = b[3];
+      this.ahref = result;
+    
+    },
+
+    async onInit (promise) {
+      try {
+        await promise
+      } catch (error) {
+        if (error.name === 'NotAllowedError') {
+          this.error = "ERROR: you need to grant camera access permisson"
+        } else if (error.name === 'NotFoundError') {
+          this.error = "ERROR: no camera on this device"
+        } else if (error.name === 'NotSupportedError') {
+          this.error = "ERROR: secure context required (HTTPS, localhost)"
+        } else if (error.name === 'NotReadableError') {
+          this.error = "ERROR: is the camera already in use?"
+        } else if (error.name === 'OverconstrainedError') {
+          this.error = "ERROR: installed cameras are not suitable"
+        } else if (error.name === 'StreamApiNotSupportedError') {
+          this.error = "ERROR: Stream API is not supported in this browser"
+        }
+      }
+    }
+  }
+
+});
+</script>
+{% endblock %}

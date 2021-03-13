@@ -7,6 +7,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response 
 from django.contrib import messages
 from geopy.distance import geodesic
+from app.forms import *
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render,reverse,redirect
 
 
 # Create your views here.
@@ -48,3 +51,57 @@ def location(request,id,*args,**kwargs):
 
 
     
+def WareUpdate(request, id):
+    e = WareHouse.objects.filter(farmer__id=id)[0]
+        
+    if request.method == "POST":
+        form = WareForm(request.POST,instance=e)
+        if form.is_valid():
+            ware = form.save(commit=False)
+            ware.farmer = Aadhar.objects.get(id=id)
+            ware.save()
+            messages.success(request,'Successfully updated!')
+            return HttpResponseRedirect(reverse('dashboard',args=[id]))
+    
+    context = {
+        'form' : WareForm(instance=e)   
+    }   
+    return render(request,'app/wareup.html',context)
+
+
+def qrgenerate(request, id):
+    user = Aadhar.objects.filter(id=id)[0]
+    data = TransportItems.objects.filter(farmer__id = id).order_by('-id')
+    context = {
+        'data': data, 
+        'auser': user, 
+    }
+    if request.method == "POST":
+        form = ItemsUpdate(request.POST)
+        print(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            item = form.save(commit=False)
+            print('reached')
+            item.farmer = Aadhar.objects.filter(id = id)[0]
+            item.drive = Driver.objects.filter(contact__id= id)[0]
+            item.save()
+            messages.success(request,'Added successfully')
+            return render(request, 'app/qrgen.html',context)
+        return render(request, 'app/qrgen.html',context)        
+    return render(request, 'app/qrgen.html',context)
+
+
+def qrdata(request,id, qid):
+    data = TransportItems.objects.get(id = qid)
+
+    context ={
+        'data': data,
+    }
+    return render(request,'app/qrdata.html',context)
+
+def scan(request):
+    return render(request, 'app/scan.html')
+
+def help(request):
+    return render(request,'app/help.html')
