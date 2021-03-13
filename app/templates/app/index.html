@@ -1,0 +1,18 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<br>
+<div class="w3-display-container w3-card-4 w3-padding-32" style='margin-top:150px; margin-left:auto; margin-right:auto;max-width:400px;'>
+    <form class="w3-form" style="margin:auto;max-width:300px;">
+    <input type="text" class="w3-input" placeholder="aadhar card number">
+    <br>
+    <p class="w3-tiny">Aadhar card photograph for verification</p>
+    <label class="file" style='margin:auto;'>
+        <input type="file" id="file" aria-label="File browser example">
+        <span class="file-custom"></span>
+    </label>
+    <hr>
+    <button type="submit" class="w3-button w3-blue w3-round w3-block">SUBMIT</button>
+    </form>
+</div>
+{% endblock %}
