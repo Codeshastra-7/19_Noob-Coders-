@@ -24,6 +24,14 @@ class Locations(models.Model):
     def __str__(self):
         return str(self.name)
 
+class WareHouse(models.Model):
+    farmer = models.ForeignKey(Aadhar,on_delete=models.CASCADE)
+    instockkgs = models.IntegerField()
+    outfordeliverykgs = models.FloatField()
+    currentcottonprice = models.FloatField()
+    monthlyrevenue = models.FloatField()
+
+
 class Driver(models.Model):
     contact = models.ForeignKey(Aadhar, related_name="user", on_delete=models.CASCADE)
     name= models.CharField(max_length=150, blank=True, null=True)
@@ -38,6 +46,4 @@ class Driver(models.Model):
     def __str__(self):
         return str(self.name)
 
-
-    
  
