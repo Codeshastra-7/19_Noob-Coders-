@@ -9,6 +9,7 @@ urlpatterns = [
     path('', index, name="main"),
     path('scan/', scan, name="scan"),
     path('help/', help, name="help"),
+    path('disease/', disease, name="leaf_detect"),
     path('marketplace/',marketplace, name="marketplace"),
     path('<int:id>/dashboard/' ,dashboard, name="dashboard"),
     path('<int:id>/distance/', location, name="distance"),

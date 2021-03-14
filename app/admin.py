@@ -10,3 +10,5 @@ admin.site.register(Locations)
 admin.site.register(Driver)
 admin.site.register(WareHouse)
 admin.site.register(TransportItems)
+
+admin.site.register(Marketplace)

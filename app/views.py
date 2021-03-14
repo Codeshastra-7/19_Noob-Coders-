@@ -11,7 +11,19 @@ from app.forms import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render,reverse,redirect
 from app.serializers import *
+import os
+import numpy as np
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+import cv2
+from PIL import Image
 
+
+location = str(os.getcwd())+'\models\eresnet152V2_model.h5'
+
+
+
+model = load_model(location)
 
 # Create your views here.
 def index(request):
@@ -22,7 +34,7 @@ def dashboard(request, id):
     driver = Driver.objects.filter(contact = user)
     details = WareHouse.objects.filter(farmer = user)[0]
     context = {
-        #'apikey': 'AIzaSyCYUeS2YnGYNzt9kZRc1p-4tt4IyEacsjY',
+        'apikey': 'AIzaSyCYUeS2YnGYNzt9kZRc1p-4tt4IyEacsjY',
         'auser': user,
         'driver': driver,
         'details': details,
@@ -125,4 +137,47 @@ def help(request):
     return render(request,'app/help.html')
 
 def marketplace(request):
-    return render(request, 'app/marketplace.html')
+    context = {
+        'items': Marketplace.objects.all(),
+    }
+    return render(request, 'app/marketplace.html',context)
+
+def model_predict(img, model):
+    loaded_image_in_array = img
+    # normalize
+    loaded_image_in_array=loaded_image_in_array/255
+
+    # add additional dim such as to match input dim of the model architecture
+    x = np.expand_dims(loaded_image_in_array, axis=0)
+
+    # prediction
+    prediction = model.predict(x)
+
+    results=np.argmax(prediction, axis=1)
+
+    if results==0:
+        results="The leaf is diseased cotton leaf"
+    elif results==1:
+        results="The leaf is diseased cotton plant"
+    elif results==2:
+        results="The leaf is fresh cotton leaf"
+    else:
+        results="The leaf is fresh cotton plant"
+
+    return results
+
+
+def disease(request):
+    if request.method=="POST":
+        img = Image.open(request.FILES['image']).convert('RGB') 
+        open_cv_image = np.array(img)
+        image = open_cv_image[:, :, ::-1].copy()
+        imageCpy = cv2.resize(image, (224, 224))
+        preds = model_predict(imageCpy, model)
+        result = preds
+        context = {'result':result}
+        print(result)
+        return render(request,'app/result.html',context)
+        
+
+    return render(request,'app/disease.html')

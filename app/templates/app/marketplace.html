@@ -1,20 +1,19 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-<div class="w3-container" style="margin:auto;">
-      <div class="w3-row">
-    <div class="w3-col l3 s6">
+<div class="w3-container" style="margin-top:100px;margin-left:auto;margin-right:auto;">
+    {% for i in items %}
+    <div class="w3-round-large w3-padding" style="margin:auto;height:500px;">
       <div class="w3-container">
-        <img src="https://picsum.photos/200/300" style="width:100%">
-        <p>Ripped Skinny Jeans<br><b>$24.99</b></p>
-      </div>
-      <div class="w3-container">
-        <img src="https://picsum.photos/200/300" style="width:100%">
-        <p>Mega Ripped Jeans<br><b>$19.99</b></p>
-      </div>
+        <img src="{{ i.image.url }}" style="width:300px;">
+        <p class="w3-xlarge">{{ i.prodname }}</p>
+        <p>{{ i.name }}<br><b>Rs.{{ i.price }} per quintal</b></p>
+        <p>{{ i.location }}</p>
+        <a href="tel:{{ i.phonenumber}}" class="w3-button w3-grey">Order Now</a>  
     </div>
+    <br>
+    {% endfor %}
 </div>
-
 
 
 {% endblock %}

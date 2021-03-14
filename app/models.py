@@ -59,4 +59,15 @@ class TransportItems(models.Model):
         return str(self.farmer.name)
 
 
- 
+class Marketplace(models.Model):
+    prodname = models.CharField(max_length=150, blank=True, null=True)
+    quantity = models.FloatField(null=True)
+    phonenumber = models.CharField(max_length=20, blank=True, null=True)
+    location = models.CharField(max_length=100,null=True,blank=True)
+    price = models.FloatField(default=1123)
+    description = models.CharField(max_length=300,null=True, blank=True)
+    image = models.ImageField(upload_to="marketplace/")
+
+    def __str__(self):
+        return str(self.prodname)
+    

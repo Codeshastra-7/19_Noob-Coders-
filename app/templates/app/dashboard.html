@@ -37,7 +37,7 @@
         const uluru = { lat: 19.187229, lng: 72.840747 };
         // The map, centered at Uluru
         const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 14,
+          zoom: 10,
           center: uluru,
         });
         // The marker, positioned at Uluru
@@ -46,11 +46,11 @@
           map: map,
         });
 
-        {% for e in drives %}
+        {% for e in driver %}
             const contentString{{ forloop.counter }} =
     '<div id="w3-card-4 w3-container w3-padding w3-round-large">' +
-    '<p class="w3-large " style="font-weight:bold;">{{ e.name }}</p>'+
-    '<p class="w3-small">{{ e.address }}</p>'
+    '<p class="w3-large" style="font-weight:bold;">{{ e.name }}</p>'+
+    '<p class="w3-small">{{ e.truckno }}</p>'
     
     "</div>";
              const infowindow{{ forloop.counter }} = new google.maps.InfoWindow({
@@ -59,13 +59,36 @@
 
 
             const marker{{ forloop.counter }} = new google.maps.Marker({
-                position: { lat:{{ e.latitude|safe }}, lng: {{ e.longitude|safe }}},
+                position: { lat:{{e.latitude|safe }}, lng: {{ e.longitude|safe }}},
                 map: map,
                 title: "{{e.name}}",
             });
             marker{{forloop.counter}}.addListener("click", () => {
         infowindow{{forloop.counter}}.open(map, marker{{forloop.counter}});
-  });
+      });
+        {% endfor %}
+
+        {% for s in driver %}
+            const contentStringe{{ forloop.counter }} =
+    '<div id="w3-card-4 w3-container w3-padding w3-round-large">' +
+    
+    '<p class="w3-small" style="font-weight:bold;">Location</p>'+
+    '<p class="w3-large" style="font-weight:bold;">{{ s.deliver.name }}</p>'
+    
+    "</div>";
+             const infowindowe{{ forloop.counter }} = new google.maps.InfoWindow({
+                    content: contentStringe{{ forloop.counter }},
+                });
+
+
+            const markere{{ forloop.counter }} = new google.maps.Marker({
+                position: { lat:{{s.deliver.latitude|safe }}, lng: {{ s.deliver.longitude|safe }}},
+                map: map,
+                title: "{{s.deliver.name}}",
+            });
+            markere{{forloop.counter}}.addListener("click", () => {
+        infowindowe{{forloop.counter}}.open(map, markere{{forloop.counter}});
+      });
         {% endfor %}
 
       }
@@ -169,7 +192,7 @@
             </a>
         </div>
         <div class="w3-col l3 m3 s6">
-            <a href="#">
+            <a href="{% url 'leaf_detect' %}">
             
             <div class="w3-container w3-border w3-round w3-center">
      <p>       <i class="fa fa-leaf w3-xlarge"></i></p>
@@ -188,12 +211,12 @@
             </a>
         </div>
         <div class="w3-col l3 m3 s6">
-        <a href="{% url 'warehousedetupdate' id=auser.id %}">
+        <a href="{% url 'marketplace' %}">
 
           
             <div class="w3-container w3-border w3-round w3-center">
-            <p><i class="fa fa-info-circle w3-xlarge"></i></p>
-            <p>warehouse data</p>
+            <p><i class="fa fa-shopping-cart w3-xlarge"></i></p>
+            <p>Market Place</p>
             </div>
               </a>
           
