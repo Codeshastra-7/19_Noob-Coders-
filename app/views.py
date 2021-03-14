@@ -10,6 +10,7 @@ from geopy.distance import geodesic
 from app.forms import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render,reverse,redirect
+from app.serializers import *
 
 
 # Create your views here.
@@ -45,10 +46,27 @@ def location(request,id,*args,**kwargs):
                 'driver_name': d.name,
                 'delivery_location': d.deliver.name,
                 'phonenumber': d.phonenumber,
+                'urld': reverse('driverdata',args=[d.contact.id,d.id])
         })
         context.append(li)        
     return Response({"message":"success", "data": context})
 
+
+@api_view(['POST'])
+@permission_classes((AllowAny, ))
+def driverloc(request,id,did,*args,**kwargs):
+    driver = Driver.objects.get(id=did)
+    serializer = DriveLocUpdate(driver,data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+def datadrive(request,id,did):
+    context = {
+        'driver': Driver.objects.get(id=did),
+        'apikey': 'AIzaSyCYUeS2YnGYNzt9kZRc1p-4tt4IyEacsjY',
+    }
+    return render(request,'app/datadrive.html',context )
 
     
 def WareUpdate(request, id):
@@ -105,3 +123,6 @@ def scan(request):
 
 def help(request):
     return render(request,'app/help.html')
+
+def marketplace(request):
+    return render(request, 'app/marketplace.html')

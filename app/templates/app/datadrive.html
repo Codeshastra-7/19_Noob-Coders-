@@ -1,0 +1,98 @@
+{% extends 'app/base.html' %}
+{% block content %}
+<style type="text/css">
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+      }
+
+  </style>
+<script>
+      // Initialize and add the map
+      function initMap() {
+        // The location of Uluru
+        const uluru = { lat: {{ driver.deliver.latitude|safe }} , lng: {{ driver.deliver.longitude|safe }} };
+        // The map, centered at Uluru
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+          center: uluru,
+        });
+        // The marker, positioned at Uluru
+        const marker = new google.maps.Marker({
+          position: uluru,
+          map: map,
+        });
+
+    
+      }
+
+</script>
+
+<script
+      src="https://maps.googleapis.com/maps/api/js?key={{ apikey }}&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+<div class="w3-container" style="margin:64px 20px;" id="vueapp">
+    <h1>Details</h1>
+    <div id="map"></div>
+    <p>Delivery Location: {{ driver.deliver.name }}</p>
+    <p>delivered for: {{ driver.contact.name }}</p>
+    <p>Contact: {{ driver.contact.phonenumber }}<a href="tel:{{driver.contact.phonenumber}}"> <i class="fa fa-phone w3-large w3-text-black"></i></a> </p>
+    <p>Transport Permit</p>
+    <img src="{{ driver.image.url }}" style="object-fit:cover;max-width:400px;margin:auto;">
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+
+<script>
+
+var app = new Vue({
+  delimiters: ["[[", "]]"],
+  el: '#vueapp',
+    data: {
+        info: [],
+        details: false,
+  },
+    mounted: function(){
+            window.setInterval(() => {
+            if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+    
+                console.log(pos)
+                var url = window.location.href + 'details/'
+                axios.post(url,
+                {"latitude": pos.lat, "longitude": pos.lng},
+                {
+                headers: {
+                    'X-CSRFTOKEN': csrftoken,
+                },
+                }
+                ).then(res => {
+                    console.log(res.data)
+                    console.log('data transferred')
+                  })
+                }
+
+
+            )
+            }else {
+                alert('Browser does not support geolocation')
+            }
+            },10000)
+    },
+   methods: {
+            
+
+                },
+         
+})
+</script>
+{% endblock %}

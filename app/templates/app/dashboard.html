@@ -296,7 +296,7 @@ var app = new Vue({
                     <p><i>[[ inf.distance ]] kms away from destination</i></p>
                                         
                                         <a>[[ inf.phonenumber ]]  <i class="fa fa-phone"></i> </a><br>
-                    <a class="w3-button w3-margin w3-border">Send delivery Link</a>
+                    <a :href="inf.urld" target="_blank" class="w3-button w3-margin w3-border">Send delivery Link</a>
                 </div><br>
             </div>
                 </div>
